@@ -300,7 +300,7 @@ thisset = {"apple", "banana", "cherry"}
 thisset.clear()
 print(thisset)
 
-#31 Directions
+#31 Dictionaries
 thisdict = {
   "brand": "Ford",
   "model": "Mustang",
