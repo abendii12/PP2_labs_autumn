@@ -4,11 +4,13 @@ def grams_to_ounces(grams):
     return ounces
 print(grams_to_ounces())
 
+
 #task2
 def fahrenheit_to_centigrade(F):
     C = (5 / 9)*(F-32)
     return int(C)
 print(fahrenheit_to_centigrade(454))
+
 
 #task3
 def solve(numheads, numlegs):
@@ -18,6 +20,7 @@ def solve(numheads, numlegs):
             print(f"{i} rabbits, {y} chickens")
 
 solve(35, 94)
+
 
 #task4
 nums = input()
@@ -30,14 +33,15 @@ def is_prime(n):
     for i in range(2, int(n**0.5) + 1):
         if n % i == 0:
             return False
-        else:
-            return True
+        
+    return True
         
 def filter_prime(first_nums):
     return [number for number in first_nums if is_prime(number)]
 
 prime = filter_prime(first_nums)
 print("Prime numbers:", prime)
+
 
 #task5
 import itertools
@@ -49,6 +53,7 @@ def permut_word():
         
 permut_word()
 
+
 #task6
 def reversed_sent():
     user = input()
@@ -57,7 +62,8 @@ def reversed_sent():
     rev_sen = ' '.join(rev)
     print("Reversed sentence:", rev_sen)
 reversed_sent()
-    
+
+
 #task7
 def has_33(nums):
     for i in range(len(nums) - 1):
@@ -66,6 +72,7 @@ def has_33(nums):
     return False
     
 print(has_33([1, 2, 3, 3]))
+
 
 #task8
 def spy_game(nums):
@@ -80,6 +87,7 @@ def spy_game(nums):
 
 print()  
 
+
 #task9
 import math
 radius = int(input())
@@ -87,14 +95,22 @@ def volume_sph(rad):
     vol = (4/3)*math.pi * rad**3
     print(vol)
 volume_sph(radius)
+
     
 #task10
-import math
-radius = int(input())
-def volume_sph(rad):
-    vol = (4/3)*math.pi * rad**3
-    print(vol)
-volume_sph(radius)
+def unique_elements(lst):
+    unique_list = [] 
+    for element in lst:
+        if element not in unique_list:  
+            unique_list.append(element)
+    return unique_list
+
+input_string = input()
+input_list = list(map(int, input_string.split()))
+
+result = unique_elements(input_list)
+
+print(result)
 
 #task11
 def is_polindrome(string):
@@ -129,6 +145,7 @@ input_list = list(map(int, input().split()))
 
 histogram(input_list)
 
+
 #task13
 import random
 
@@ -150,6 +167,7 @@ def guess_number():
             break  
 
 guess_number()
+
 
 #task14
 from task1 import grams_to_ounces
