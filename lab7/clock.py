@@ -32,7 +32,7 @@ while running:
     curr_date=datetime.datetime.now()
     curr_min=curr_date.minute
     curr_sec=curr_date.second
-    minute_angle=(curr_min/48) * (-360)
+    minute_angle=(curr_min/60) * (-360)
     second_angle=(curr_sec/60) * (-360)
     
     rotated_Rhand=pygame.transform.rotate(imageR,minute_angle)
