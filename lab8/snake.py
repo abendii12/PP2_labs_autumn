@@ -18,7 +18,7 @@ colorYELLOW = (255, 255, 0)
 
 CELL = 30 #определяем размер одной клетки сетки (CELL = 30 пикселей).
 
-# Font for displaying score and level
+#шрифт
 font = pygame.font.SysFont("Verdana", 20)
 
 
@@ -37,9 +37,9 @@ class Snake:
         self.body = [Point(10, 11), Point(10, 12), Point(10, 13)] 
         self.dx = 1 #начальное направление движения (вправо).
         self.dy = 0 #начальное направление движения (вправо).
-        self.score = 0
-        self.level = 1
-        self.speed = 5
+        self.score = 0 #очки игрока
+        self.level = 1 #уровень
+        self.speed = 5 #скорость, с каждй съеденной едой увеличивается
     '''
     self.body — список, который хранит координаты всех сегментов змейки.
 
@@ -55,7 +55,13 @@ class Snake:
     '''
 
     def move(self):
-        # 1. Перемещаем тело змейки
+        # перемещаем тело змейки
+        '''Цикл идёт с последнего сегмента до первого (включая 1, но не 0), 
+        и каждый сегмент получает координаты предыдущего сегмента.
+        Это обеспечивает смещение тела вслед за головой 
+        (хвост "следует" за сегментом перед ним).
+        Важно: копируются координаты, а не объекты Point. 
+        Поэтому если не добавить новый сегмент, хвост "переносится".'''
         for i in range(len(self.body) - 1, 0, -1):
             self.body[i].x = self.body[i - 1].x
             self.body[i].y = self.body[i - 1].y
@@ -78,6 +84,10 @@ class Snake:
         dx = 0, dy = 1 — движение вниз.
 
         dx = 0, dy = -1 — движение вверх.'''
+        
+        '''WIDTH // CELL — количество клеток по горизонтали (600 // 30 = 20). 
+        Допустимые индексы 0..19. Если голова выходит правее > 19, 
+        она телепортируется в 0'''
 
         if self.body[0].x > WIDTH // CELL - 1:
             self.body[0].x = 0
@@ -94,10 +104,11 @@ class Snake:
         Выходит за верхнюю границу → появляется снизу
         '''
 
-    def draw(self):
+    def draw(self):#рисуем змейку
         head = self.body[0]
+        #рисует голову как прямоугольник на поверхности screen. Координаты переводятся из клеток в пиксели умножением на CELL.
         pygame.draw.rect(screen, colorRED, (head.x * CELL, head.y * CELL, CELL, CELL))
-        for segment in self.body[1:]:
+        for segment in self.body[1:]: #для всех оставшихся сегментов тела (кроме головы)
             pygame.draw.rect(screen, colorYELLOW, (segment.x * CELL, segment.y * CELL, CELL, CELL))
         '''
         screen — экран, на котором рисуем.
@@ -117,7 +128,8 @@ class Snake:
         Цикл проходит по каждому сегменту тела змейки и рисует его.
         '''
 
-    def check_collision(self, food):#Если координаты головы совпадают с координатами еды: Увеличиваем змейку. Увеличиваем счет. Перемещаем еду в случайное место
+    def check_collision(self, food):
+        #Если координаты головы совпадают с координатами еды: Увеличиваем змейку. Увеличиваем счет. Перемещаем еду в случайное место
         head = self.body[0]
         if head.x == food.pos.x and head.y == food.pos.y:
             self.body.append(Point(head.x, head.y))
@@ -167,12 +179,12 @@ while running:
                 snake.dy = -1
 
     screen.fill(colorBLACK)
-    snake.move()
-    snake.check_collision(food)
+    snake.move() #Вызываем метод перемещения: обновляем позиции всех сегментов
+    snake.check_collision(food) #Проверяем столкновение головы со съедобным объектом
     snake.draw()
     food.draw()
 
-    # Display score and level
+    #рендерит строки в объект Surface и выводит их на экран
     score_text = font.render(f"Score: {snake.score}", True, colorWHITE)
     level_text = font.render(f"Level: {snake.level}", True, colorWHITE)
     screen.blit(score_text, (10, 10))

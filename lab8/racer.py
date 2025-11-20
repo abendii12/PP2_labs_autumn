@@ -12,8 +12,9 @@ pygame.mixer.music.play(-1)   #используем -1 чтобы музыка �
 pygame.mixer.music.set_volume(0.3)   #регулируем громкость
 
 #фпс для того чтобы игра была плавной (частота)
+#объект clock позволяет ограничивать фактическую частоту кадров с помощью tick()
 FPS = 60
-FramePerSec = pygame.time.Clock()
+FramePerSec = pygame.time.Clock() 
 
 #цвета для текста и фона
 BLACK = (0, 0, 0)
@@ -32,6 +33,7 @@ font = pygame.font.SysFont("Verdana", 60)
 font_small = pygame.font.SysFont("Verdana", 20)
 
 #картинка для экрана game over
+#заранее рендерим текст Game Over в поверхность чтобы потом быстро показать
 game_over = font.render("Game Over", True, BLACK)
 
 #загружаем фон и растягиваем под размер экрана
@@ -58,9 +60,10 @@ def get_safe_coin_position(player, enemies):
         unsafe = False
         for enemy in enemies:
             if coin_rect.colliderect(enemy.rect.inflate(80, 200)):
-                '''проверяем пересечение с увеличенной (inflate) 
-                хитбокс зоной игрока если пересекается 
-                продолжаем цикл continue чтобы взять новую позицию'''
+                '''проверяем пересечение с увеличенной (inflate) хитбокс зоной 
+                игрока если пересекается продолжаем цикл continue чтобы взять 
+                новую позицию. inflate(80,200) расширяет прямоугольник игрока 
+                в ширину на 80 и в высоту на 200 создавая зону безопасности.'''
                 unsafe = True
                 break
         if unsafe:
@@ -134,7 +137,8 @@ P1 = Player()
 E1 = Enemy()
 
 #группы врагов
-enemies = pygame.sprite.Group()
+enemies = pygame.sprite.Group() 
+#группа для врагов удобна для коллизий и итерации. добавляем в неё E1.
 enemies.add(E1)
 
 #создаем монету после создания врага
@@ -144,15 +148,17 @@ C1 = Coin()
 coins = pygame.sprite.Group()
 coins.add(C1)
 
-#все объекты игры в одном месте
+#группа всех объектов чтобы в основном цикле удобно перебирать и рисовать/обновлять всё в одном месте.
 all_sprites = pygame.sprite.Group()
 all_sprites.add(P1)
 all_sprites.add(E1)
 all_sprites.add(C1)
 
 #событие для увеличения скорости
+#уникальный идентификатор пользовательского события
 INC_SPEED = pygame.USEREVENT + 1
 pygame.time.set_timer(INC_SPEED, 1000)
+#заставляет pygame каждую секунду помещать событие INC_SPEED в очередь событий это используется чтобы постепенно увеличивать SPEED
 
 #главный цикл игры
 while True:
@@ -184,6 +190,7 @@ while True:
         DISPLAYSURF.fill(RED)
         DISPLAYSURF.blit(game_over, (30, 250))
         pygame.display.update()
+        #удаляем все спрайты очищаем группы чтобы объекты перестали обновляться/рисоваться.
         for entity in all_sprites:
             entity.kill()
         time.sleep(2) #ждём 2 секунды чтобы игрок увидел Game Over.
