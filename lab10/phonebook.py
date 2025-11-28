@@ -2,7 +2,6 @@ import psycopg2
 import csv
 import os
 
-# ---------------- CONNECTION ----------------
 def connect():
     return psycopg2.connect(
         host="localhost",
@@ -11,7 +10,6 @@ def connect():
         password="28AMI!11.2k5"   # укажи свой пароль
     )
 
-# ---------------- CREATE TABLE ----------------
 def create_table():
     conn = connect()
     cur = conn.cursor()
@@ -27,7 +25,7 @@ def create_table():
     conn.close()
     print("Table created successfully.")
 
-# ---------------- INSERT FROM CSV ----------------
+
 def insert_from_csv(filename):
     conn = connect()
     cur = conn.cursor()
@@ -55,7 +53,7 @@ def insert_from_csv(filename):
     conn.close()
     print("CSV data inserted successfully.")
 
-# ---------------- QUERY DATA ----------------
+
 def query_data():
     conn = connect()
     cur = conn.cursor()
@@ -67,8 +65,7 @@ def query_data():
     print("----------------------\n")
     conn.close()
 
-# ---------------- INSERT FROM CONSOLE ----------------
-def insert_from_console():
+
     name = input("Enter name: ")
     surname = input("Enter surname: ")
     phone = input("Enter phone: ")
@@ -79,7 +76,7 @@ def insert_from_console():
     conn.close()
     print("Data inserted.")
 
-# ---------------- UPDATE DATA ----------------
+
 def update_data():
     conn = connect()
     cur = conn.cursor()
@@ -101,7 +98,7 @@ def update_data():
     conn.close()
     print("Updated successfully.")
 
-# ---------------- DELETE DATA ----------------
+
 def delete_data():
     conn = connect()
     cur = conn.cursor()
@@ -125,12 +122,11 @@ def delete_data():
     conn.close()
     print("Deleted successfully.")
 
-# ---------------- MAIN MENU ----------------
 def main():
     create_table()
 
     # Автоматическая вставка CSV и вывод таблицы
-    insert_from_csv("phonebook.csv")  # положи CSV рядом с phonebook.py
+    insert_from_csv("phonebook.csv")  
     query_data()
 
     while True:
